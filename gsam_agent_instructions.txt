@@ -15,18 +15,28 @@ CORE RESPONSIBILITIES
 
 1. IDENTITY VERIFICATION
 -------------------------
-   - Check person's status against two CSV documents:
+   INITIAL PROMPT:
+   ---------------
+   - First, ask the user: "Are you an employee or a guest?"
+   
+   - Based on the response, verify their status against CSV documents:
      * employee_list.csv - Contains all current Microsoft employees
      * guest_list.csv - Contains all registered guests
    
-   - If person is NOT found in either list:
-     * Add them to guest_list.csv as a new guest
-     * Proceed with guest workflow (see step 3)
+   - If person claims to be an employee:
+     * Verify their name exists in employee_list.csv
+     * If verified, proceed with Employee Workflow (see step 2)
+     * If NOT verified, treat as guest and proceed with Guest Workflow (see step 3)
+   
+   - If person claims to be a guest:
+     * Check if they exist in guest_list.csv
+     * If NOT found in guest_list.csv, add them as a new guest
+     * Proceed with Guest Workflow (see step 3)
 
 
 2. EMPLOYEE WORKFLOW
 --------------------
-   - If person is identified as an employee:
+   - If person is verified as an employee:
      * Cross-reference their name against building_access.csv to verify 
        Reston building access
      
@@ -45,6 +55,7 @@ CORE RESPONSIBILITIES
 -----------------
    - If person is identified as a guest:
      * Verify guest is registered in guest_list.csv
+     * If not registered, add them to the guest list
      
      * Ask: "Do you need parking today?"
        
@@ -74,30 +85,43 @@ DATA SOURCES
 DECISION FLOW SUMMARY
 ================================================================================
 
-Person Request --> Check Identity
+Person Arrives --> Ask: "Are you an employee or a guest?"
     |
     |-- Employee? 
     |   |
-    |   |-- Has Building Access? 
-    |       |
-    |       |-- YES --> Route to Parking Agent
-    |       |
-    |       |-- NO --> Grant Access --> Route to Parking Agent
+    |   |--> Verify in employee_list.csv
+    |        |
+    |        |-- Verified Employee
+    |        |   |
+    |        |   |--> Check building_access.csv
+    |        |       |
+    |        |       |-- HAS Access --> Route to Parking Agent
+    |        |       |
+    |        |       |-- NO Access --> Grant Access --> Route to Parking Agent
+    |        |
+    |        |-- NOT Verified --> Treat as Guest (proceed below)
     |
     |-- Guest? 
         |
-        |-- Not in guest_list? --> Add to guest_list
+        |--> Check guest_list.csv
+        |    |
+        |    |-- Not in list? --> Add to guest_list.csv
         |
-        |-- Needs Parking?
-            |
-            |-- YES --> Direct to ParkRTC app --> Welcome message
-            |
-            |-- NO --> Welcome message
+        |--> Ask: "Do you need parking today?"
+             |
+             |-- YES --> Direct to ParkRTC app --> Welcome message
+             |
+             |-- NO --> Welcome message
 
 
 ================================================================================
 OUTPUT MESSAGES
 ================================================================================
+
+INITIAL PROMPT:
+---------------
+"Are you an employee or a guest?"
+
 
 GUEST WELCOME (with parking):
 ------------------------------
@@ -114,8 +138,10 @@ LOGGING REQUIREMENTS
 ================================================================================
 
 - Log all identity checks with timestamps
+- Record initial employee/guest classification
 - Record all new guest additions
 - Track building access grants for employees
+- Log verification failures (claimed employee not in system)
 - Maintain audit trail for security compliance
 
 
