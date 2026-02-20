@@ -50,7 +50,7 @@ RockstarAI_GroupOne_Project/
 
 **🎯 Step-by-Step Instructions:**
 
-1️⃣ **Complete the conversation loop** (around line 237 in `agent_starter.py`):
+1️⃣ **Complete the conversation loop** (around line 324 in `agent_starter.py`):
 
 Replace:
 ```python
@@ -65,7 +65,7 @@ result = await agent.run(user_input, thread=thread)
 print(str(result), "\n")
 ```
 
-2️⃣ **Add your tools to the agent** (around line 190):
+2️⃣ **Add your tools to the agent** (around line 291):
 
 Replace:
 ```python
@@ -77,7 +77,7 @@ With:
 tools=[check_employee_exists, check_guest_exists],
 ```
 
-3️⃣ **Write better agent instructions** (around line 177). Replace the TODO comment with real instructions! Here's a starter:
+3️⃣ **Write better agent instructions** (around line 271). Replace the TODO comment with real instructions! Here's a starter:
 
 ```python
 instructions=f"""You are a friendly access control assistant for Microsoft Reston campus.
@@ -105,7 +105,7 @@ Always confirm the information you find before proceeding.
 
 **🎯 Step-by-Step Instructions:**
 
-1️⃣ **Implement `check_employee_exists()`** (around line 34):
+1️⃣ **Implement `check_employee_exists()`** (around line 82):
 
 Replace the `pass` with:
 ```python
@@ -129,7 +129,7 @@ except Exception as e:
 - `result.empty` checks if we found anything
 - `.iloc[0]` gets the first (and only) matching row
 
-2️⃣ **Implement `check_guest_exists()`** (around line 48):
+2️⃣ **Implement `check_guest_exists()`** (around line 95):
 
 Replace the `pass` with:
 ```python
@@ -180,7 +180,7 @@ except Exception as e:
 
 **🔐 IMPORTANT:** Starting at this level, you're implementing **write operations**! All write functions must call `request_approval_for_write_operation()` before modifying CSV files. This is already implemented for you - just follow the pattern below.
 
-1️⃣ **Implement `add_employee()`** (around line 63):
+1️⃣ **Implement `add_employee()`** (around line 112):
 
 Replace the `pass` with:
 ```python
@@ -225,7 +225,7 @@ except Exception as e:
 - `pd.concat()` combines the original DataFrame with the new row
 - `to_csv()` saves back to the file (index=False means don't save row numbers)
 
-2️⃣ **Implement `add_guest()`** (around line 79):
+2️⃣ **Implement `add_guest()`** (around line 133):
 
 Replace the `pass` with:
 ```python
@@ -261,7 +261,7 @@ except Exception as e:
     return f"Error adding guest: {str(e)}"
 ```
 
-3️⃣ **Add these tools to your agent** (around line 190):
+3️⃣ **Add these tools to your agent** (around line 291):
 
 Update your tools list:
 ```python
@@ -304,7 +304,7 @@ Agent: Successfully added Tony Stark!
 
 **🎯 Step-by-Step Instructions:**
 
-1️⃣ **Implement `generate_parking_code()`** (around line 95):
+1️⃣ **Implement `generate_parking_code()`** (around line 150):
 
 Replace the `pass` with:
 ```python
@@ -354,7 +354,7 @@ except Exception as e:
 - **🔐 Request approval** before saving the parking code
 - We handle the case where parking_records.csv doesn't exist yet
 
-2️⃣ **Add tool to agent** (around line 190):
+2️⃣ **Add tool to agent** (around line 291):
 
 ```python
 tools=[check_employee_exists, check_guest_exists, add_employee, add_guest, generate_parking_code],
@@ -388,7 +388,7 @@ Agent: ✅ Parking code: A7K9M2
 
 **🎯 Step-by-Step Instructions:**
 
-1️⃣ **Implement `check_badge_access()`** (around line 114):
+1️⃣ **Implement `check_badge_access()`** (around line 166):
 
 Replace the `pass` with:
 ```python
@@ -417,7 +417,7 @@ except Exception as e:
 - `.split(',')` splits "2,3,4" into ["2", "3", "4"]
 - List comprehension formats each floor number nicely
 
-2️⃣ **Implement `update_badge_access()`** (around line 127):
+2️⃣ **Implement `update_badge_access()`** (around line 179):
 
 Replace the `pass` with:
 ```python
@@ -519,7 +519,7 @@ Agent: [Adds floor 6 to existing access]
 
 **🎯 Step-by-Step Instructions:**
 
-1️⃣ **Implement `remove_expired_guest()`** (around line 147):
+1️⃣ **Implement `remove_expired_guest()`** (around line 200):
 
 Replace the `pass` with:
 ```python
@@ -549,7 +549,7 @@ except Exception as e:
     return f"Error removing expired guest: {str(e)}"
 ```
 
-2️⃣ **Implement `add_guest_with_auto_alias()`** (around line 160):
+2️⃣ **Implement `add_guest_with_auto_alias()`** (around line 215):
 
 Replace the `pass` with:
 ```python
@@ -602,7 +602,7 @@ except Exception as e:
 - We check if it's unique and add a counter if needed
 - **🔐 Request approval** before re-registering the guest
 
-3️⃣ **Add tools to agent** (around line 190):
+3️⃣ **Add tools to agent** (around line 245):
 
 ```python
 tools=[check_employee_exists, check_guest_exists, add_employee, add_guest, 
@@ -1073,9 +1073,7 @@ Be helpful, friendly, and professional!""",
 
 ## �📚 Resources
 
-- [Azure AI Agent Framework Docs](https://learn.microsoft.com/en-us/azure/)
-- [Pandas Cheat Sheet](https://pandas.pydata.org/docs/)
-- [Pydantic Field Guide](https://docs.pydantic.dev/)
+- [MSFT Agent Framework](https://github.com/microsoft/agent-framework/tree/main)
 
 ---
 
