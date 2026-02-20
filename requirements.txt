@@ -1,0 +1,4 @@
+python-dotenv
+agent-framework==1.0.0b260123
+pandas
+azure-identity
